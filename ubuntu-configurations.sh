@@ -36,3 +36,8 @@ add-apt-repository -y ppa:ondrej/php
 apt update
 DEBIAN_FRONTEND=noninteractive apt install -y php7.4
 DEBIAN_FRONTEND=noninteractive apt install -y php7.4-mysql php7.4-xml php7.4-curl php7.4-mbstring php7.4-gd
+
+echo "Install PHP Composer"
+DEBIAN_FRONTEND=noninteractive apt install -y php7.4-cli
+curl -sS https://getcomposer.org/installer -o /tmp/composer-setup.php
+php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer
