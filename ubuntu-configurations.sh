@@ -1,50 +1,45 @@
 #!/bin/bash
 
-echo "Configuring VARs for non interactive dialogs"
+BLUE='\033[0;34m'
+NC='\033[0m'
+
+echo -e "${BLUE}-= Configuring VARs for non interactive dialogs =-${NC}"
+
 export NEEDRESTART_MODE=a
 export DEBIAN_FRONTEND=noninteractive
 
-echo "Running apt update"
+echo -e "${BLUE}-= Updating Debian =-${NC}"
+
 apt update && apt dist-upgrade -y
 
-echo "Install MySQL Server 5.7.29"
-apt install -y libtinfo5 libmecab2
+echo -e "${BLUE}-= Installing PostgreSQL v13 =-${NC}"
 
-wget https://downloads.mysql.com/archives/get/p/23/file/mysql-client_5.7.29-1ubuntu18.04_amd64.deb
-wget https://downloads.mysql.com/archives/get/p/23/file/mysql-common_5.7.29-1ubuntu18.04_amd64.deb
-wget https://downloads.mysql.com/archives/get/p/23/file/mysql-community-client_5.7.29-1ubuntu18.04_amd64.deb
-wget https://downloads.mysql.com/archives/get/p/23/file/mysql-community-server_5.7.29-1ubuntu18.04_amd64.deb
-# wget https://downloads.mysql.com/archives/get/p/23/file/mysql-server_5.7.29-1ubuntu18.04_amd64.deb
-# wget https://downloads.mysql.com/archives/get/p/23/file/mysql-testsuite_5.7.29-1ubuntu18.04_amd64.deb
+sudo apt install -y postgresql-13
+systemctl enable postgresql
 
-dpkg -i ./mysql-common_5.7.29-1ubuntu18.04_amd64.deb
-dpkg -i ./mysql-community-client_5.7.29-1ubuntu18.04_amd64.deb
-dpkg -i ./mysql-client_5.7.29-1ubuntu18.04_amd64.deb
-debconf-set-selections <<< 'mysql-community-server mysql-community-server/root-pass password root'
-debconf-set-selections <<< 'mysql-community-server mysql-community-server/re-root-pass password root'
-dpkg -i ./mysql-community-server_5.7.29-1ubuntu18.04_amd64.deb
-# dpkg -i ./mysql-server_5.7.29-1ubuntu18.04_amd64.deb
+echo -e "${BLUE}-= Installing Apache Server 2.0 =-${NC}"
 
-echo "Install Apache Server 2.0"
 apt install -y apache2
-
 a2dismod mpm_event
 a2enmod mpm_prefork
-
 systemctl restart apache2
+systemctl enable apache2
 
-echo "Install PHP 7.4 & PHP Extensions"
-apt install -y lsb-release ca-certificates apt-transport-https software-properties-common
-add-apt-repository -y ppa:ondrej/php
-apt update
+echo -e "${BLUE}-= Installing PHP 7.4 & PHP Extensions =-${NC}"
+
 apt install -y php7.4
 apt install -y php7.4-mysql php7.4-xml php7.4-curl php7.4-mbstring php7.4-gd
 
-echo "Install PHP Composer"
+echo -e "${BLUE}-= Installing PHP Composer =-${NC}"
+
 apt install -y php7.4-cli
 curl -sS https://getcomposer.org/installer -o /tmp/composer-setup.php
 php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer
 
-echo "Doing Other Tasks"
-mysql -u root -proot -e "create database db_drupal; GRANT ALL PRIVILEGES ON db_drupal.* TO user_drupal@localhost IDENTIFIED BY 'user_drupal_pass'"
+echo -e "${BLUE}-= Doing Other Tasks =-${NC}"
+
 echo -e "<?php phpinfo(); ?>" >> /var/www/html/phpinfo.php
+echo -e "host  all  all  0.0.0.0/0  md5" >> /etc/postgresql/13/main/pg_hba.conf
+echo -e "host  all  all  ::/0  md5" >> /etc/postgresql/13/main/pg_hba.conf
+sed -i '/listen_addresses/s/^#//g' /etc/postgresql/13/main/postgresql.conf
+sed -i '/listen_addresses/s/localhost/\*/g' /etc/postgresql/13/main/postgresql.conf
