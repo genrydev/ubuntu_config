@@ -12,11 +12,6 @@ echo -e "${BLUE}-= Updating Debian =-${NC}"
 
 apt update && apt dist-upgrade -y
 
-echo -e "${BLUE}-= Installing PostgreSQL v13 =-${NC}"
-
-sudo apt install -y postgresql-13
-systemctl enable postgresql
-
 echo -e "${BLUE}-= Installing Apache Server 2.0 =-${NC}"
 
 apt install -y apache2
@@ -36,6 +31,12 @@ apt install -y php7.4-cli
 curl -sS https://getcomposer.org/installer -o /tmp/composer-setup.php
 php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer
 
+echo -e "${BLUE}-= Installing Docker =-${NC}"
+
+curl -fsSL https://get.docker.com -o get-docker.sh
+sh get-docker.sh
+usermod -aG docker azureuser
+
 echo -e "${BLUE}-= Doing Other Tasks =-${NC}"
 
 echo -e "<?php phpinfo(); ?>" >> /var/www/html/phpinfo.php
@@ -43,3 +44,4 @@ echo -e "host  all  all  0.0.0.0/0  md5" >> /etc/postgresql/13/main/pg_hba.conf
 echo -e "host  all  all  ::/0  md5" >> /etc/postgresql/13/main/pg_hba.conf
 sed -i '/listen_addresses/s/^#//g' /etc/postgresql/13/main/postgresql.conf
 sed -i '/listen_addresses/s/localhost/\*/g' /etc/postgresql/13/main/postgresql.conf
+systemctl restart postgresql
