@@ -40,8 +40,3 @@ usermod -aG docker azureuser
 echo -e "${BLUE}-= Doing Other Tasks =-${NC}"
 
 echo -e "<?php phpinfo(); ?>" >> /var/www/html/phpinfo.php
-echo -e "host  all  all  0.0.0.0/0  md5" >> /etc/postgresql/13/main/pg_hba.conf
-echo -e "host  all  all  ::/0  md5" >> /etc/postgresql/13/main/pg_hba.conf
-sed -i '/listen_addresses/s/^#//g' /etc/postgresql/13/main/postgresql.conf
-sed -i '/listen_addresses/s/localhost/\*/g' /etc/postgresql/13/main/postgresql.conf
-systemctl restart postgresql
