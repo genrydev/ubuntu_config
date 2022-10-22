@@ -54,7 +54,7 @@ php7.4-xmlreader \
 php7.4-xmlwriter \
 php7.4-zip
 
-echo -e "${BLUE}-= Installing Apache Server 2.0 =-${NC}"
+echo -e "${BLUE}-= Installing Apache Server 2.0 & Modules =-${NC}"
 
 apt install -y apache2
 a2dismod mpm_event
