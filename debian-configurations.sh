@@ -59,7 +59,7 @@ apt-get -qq install -y apache2
 a2dismod mpm_event
 a2enmod mpm_prefork
 a2enmod rewrite
-systemctl enable apache2
+#systemctl enable apache2
 systemctl restart apache2
 
 echo -e "${BLUE}-= Installing PHP Composer =-${NC}"
