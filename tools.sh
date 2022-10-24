@@ -2,15 +2,13 @@
 
 echo -e "${BLUE}-= Installing GIT =-${NC}"
 
-apt install -y git
+apt-get -qq install -y git
 
 echo -e "${BLUE}-= Installing Docker =-${NC}"
 
 curl -fsSL https://get.docker.com -o get-docker.sh ; sh get-docker.sh ; usermod -aG docker azureuser
 
 echo -e "${BLUE}-= Doing Other Tasks =-${NC}"
-
-echo -e "<?php phpinfo(); ?>" >> /var/www/html/phpinfo.php
 
 docker run -d \
 --name bhudb \
@@ -23,3 +21,5 @@ docker run -d \
 -p 5432:5432 \
 --restart unless-stopped \
 postgres:13.8
+
+echo -e "<?php phpinfo(); ?>" >> /var/www/html/phpinfo.php

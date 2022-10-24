@@ -59,6 +59,24 @@ apt-get -qq install -y apache2
 a2dismod mpm_event
 a2enmod mpm_prefork
 a2enmod rewrite
+
+echo -e "${BLUE}-= Configuring Apache Default Site =-${NC}"
+
+cat /dev/null > /etc/apache2/sites-available/000-default.conf
+echo -e "<VirtualHost *:80>" >> /etc/apache2/sites-available/000-default.conf
+echo -e "        DocumentRoot /var/www/html/bhuwebsite/web" >> /etc/apache2/sites-available/000-default.conf
+echo -e "        ErrorLog ${APACHE_LOG_DIR}/error.log" >> /etc/apache2/sites-available/000-default.conf
+echo -e "        CustomLog ${APACHE_LOG_DIR}/access.log combined" >> /etc/apache2/sites-available/000-default.conf
+echo -e "</VirtualHost>" >> /etc/apache2/sites-available/000-default.conf
+
+echo -e "<Directory /var/www/html/bhuwebsite/web/>" >> /etc/apache2/apache2.conf
+echo -e "        Options Indexes FollowSymLinks" >> /etc/apache2/apache2.conf
+echo -e "        AllowOverride All" >> /etc/apache2/apache2.conf
+echo -e "        Require all granted" >> /etc/apache2/apache2.conf
+echo -e "</Directory>" >> /etc/apache2/apache2.conf
+
+echo -e "${BLUE}-= Enabling & Restart Apache Server =-${NC}"
+
 systemctl enable apache2
 systemctl restart apache2
 
