@@ -1,5 +1,18 @@
 #!/bin/bash
 
+##########################################################################################
+# Este script permite configurar un SO Debian 11 para el despliegue de Sitio Web Drupal  #
+#                                                                                        #
+# Algunas consideraciones:                                                               #
+# - El script deberá ser ejecutado con permisos de super-usuario (root)                  #
+# - Debe existir acceso a internet de manera directa, sin necesidad de uso de proxy      #
+# - El script logue la mínima información (warnings o errores)                           #
+#                                                                                        #
+# Ejecución:                                                                             #
+# $ sudo su                                                                              #
+# # bash debian-configurations.sh                                                        #
+##########################################################################################
+
 BLUE='\033[0;34m'
 NC='\033[0m'
 
