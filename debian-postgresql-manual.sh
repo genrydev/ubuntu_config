@@ -6,6 +6,4 @@
 
 sudo -u postgres psql
 
-create database drupal;
-create user drupal with encrypted password 'drupal';
-grant all privileges on database drupal to drupal;
+create database drupal; create user drupal with encrypted password 'drupal'; grant all privileges on database drupal to drupal;

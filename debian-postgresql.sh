@@ -35,7 +35,7 @@ echo -e "${BLUE}-= Change PostgreSQL default port & listen addresses =-${NC}"
 
 sed -i "s/5432/$POSTGRESQL_PORT/g" /etc/postgresql/13/main/postgresql.conf
 sed -i '/listen_addresses/s/localhost/*/g' /etc/postgresql/13/main/postgresql.conf
-sed -i '/listen_addresses/s/#//g' /etc/postgresql/13/main/postgresql.conf
+sed -i '/listen_addresses/s/^#//g' /etc/postgresql/13/main/postgresql.conf
 
 echo -e "host all all 0.0.0.0/0 md5" >> /etc/postgresql/13/main/pg_hba.conf
 
